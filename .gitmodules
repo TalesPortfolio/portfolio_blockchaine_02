@@ -4,3 +4,6 @@
 [submodule "rental_dapp/contract/lib/openzeppelin-contracts"]
 	path = rental_dapp/contract/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "rental_dapp/contract/lib/solmate"]
+	path = rental_dapp/contract/lib/solmate
+	url = https://github.com/Rari-Capital/solmate
