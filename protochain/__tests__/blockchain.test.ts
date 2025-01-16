@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 22:17:03 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/16 23:31:09 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ describe("Block tests", ()=>{
         const blockchain = new Blockchain();
         const result = blockchain.addBlock(new Block(1, blockchain.block[0].hash, "block 2"));
         expect(result.success).toEqual(true);        
+    })
+
+    test('Sould get block ', ()=>{
+        const blockchain = new Blockchain();
+        const block = blockchain.getBlock(blockchain.block[0].hash);
+        expect(block).toBeTruthy();        
     })
 
     test('Sould NOT add block ', ()=>{

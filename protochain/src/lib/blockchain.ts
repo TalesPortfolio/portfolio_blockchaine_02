@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 22:07:08 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/16 23:20:09 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ export default class Blockchain{
         this.block.push(block);
         this.nextIndex++;
         return new Validation();
+    }
+
+    getBlock(hash: string): Block | undefined{
+        return this.block.find(b => b.hash === hash);   
     }
 
     isValid(): Validation {
