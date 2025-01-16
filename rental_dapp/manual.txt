@@ -1,0 +1,73 @@
+Projeto: Sistema de Gestão de Aluguel Descentralizado
+Descrição: Um sistema onde proprietários de imóveis podem cadastrar suas propriedades para aluguel,
+e inquilinos podem alugar essas propriedades de forma segura e transparente, 
+utilizando um contrato inteligente para gerenciar pagamentos e períodos de locação.
+
+Requisitos e Funcionalidades
+Smart Contract
+Cadastro de Propriedades:
+
+Apenas o proprietário pode cadastrar uma propriedade, especificando:
+Nome/descrição do imóvel.
+Preço do aluguel por período (ex.: 1 mês em ETH).
+Duração mínima e máxima do aluguel.
+Cada imóvel deve ser associado ao endereço do proprietário.
+Aluguel de Propriedade:
+
+Inquilinos podem alugar um imóvel pagando o valor correspondente ao período desejado.
+O contrato inteligente deve bloquear o valor pago até o término do período de aluguel.
+Confirmação e Liberação de Pagamento:
+
+Após o término do período de aluguel, o proprietário pode confirmar que o imóvel foi devolvido em boas condições, liberando o pagamento.
+Se houver problemas, deve haver uma função de disputa que congela os fundos até a resolução.
+Funções Adicionais:
+
+Consulta de imóveis disponíveis para aluguel.
+Rescisão antecipada (com penalidades, se aplicável).
+Função para o proprietário encerrar o contrato de locação após o período.
+Frontend
+Página Inicial:
+
+Lista de propriedades disponíveis com detalhes como preço, período mínimo/máximo, e descrição.
+Área do Proprietário:
+
+Tela para cadastrar novas propriedades.
+Exibição de propriedades já cadastradas, com status (alugada ou disponível).
+Botão para confirmar o término do aluguel e liberar o pagamento.
+Área do Inquilino:
+
+Formulário para alugar uma propriedade.
+Histórico de imóveis alugados com status (em andamento ou concluído).
+Conexão com MetaMask:
+
+Permitir que usuários (proprietários e inquilinos) conectem suas carteiras para interagir com o sistema.
+Fluxo de Trabalho
+Deploy do Contrato:
+
+Implante o contrato inteligente em uma testnet como Goerli ou Sepolia.
+Frontend:
+
+Construa o frontend com React ou Next.js.
+Utilize ethers.js para interagir com o contrato inteligente.
+Interação Entre Frontend e Backend:
+
+Configure chamadas para as funções do contrato, como:
+Cadastrar propriedades.
+Alugar uma propriedade.
+Confirmar término do aluguel.
+Estilização e Experiência do Usuário:
+
+Use styled-components ou frameworks como Tailwind CSS para um design moderno.
+Adicione mensagens claras para cada ação, como confirmações de pagamento.
+Diferenciais para o Portfólio
+Sistema de Avaliação:
+
+Inquilinos podem avaliar as propriedades e os proprietários após o término do contrato.
+Sistema de Disputa:
+
+Implemente uma função que permita congelar os fundos e resolver disputas.
+Deploy Final:
+
+Hospede o frontend no Vercel ou Netlify.
+Faça o deploy do contrato na testnet e integre.
+
