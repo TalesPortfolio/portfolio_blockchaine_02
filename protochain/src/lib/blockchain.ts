@@ -6,14 +6,15 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 20:57:07 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/16 22:07:08 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 import Block from "./block";
+import Validation from "./validation";
 /**
- * lockchain class
+ * blockchain class
  */
 
 export default class Blockchain{
@@ -33,22 +34,25 @@ export default class Blockchain{
         return this.block[this.block.length - 1];
     }
 
-    addBlock(block: Block) : boolean {
+    addBlock(block: Block) : Validation {
         const lastBlock = this.getLastBlock();
         
-        if(!block.isValid(lastBlock.hash, lastBlock.index)) return false;
+        const validation = block.isValid(lastBlock.hash, lastBlock.index);
+        if(!validation.success) 
+            return new Validation(false, `Invalid block. ${validation.message}`);
         this.block.push(block);
         this.nextIndex++;
-        return true;
+        return new Validation();
     }
 
-    isValid(): boolean {
+    isValid(): Validation {
         for(let i = this.block.length - 1; i > 0; i++){
             const currentBlock = this.block[i];
             const previousBlock = this.block[i - 1];
-            const isValid = currentBlock.isValid(previousBlock.hash, previousBlock.index);
-            if(!isValid) return false;
+            const validation = currentBlock.isValid(previousBlock.hash, previousBlock.index);
+            if(!validation.success) 
+                return new Validation(false, `Invalid bloc# ${currentBlock.index}: ${validation.message}`);
         }
-        return true;
+        return new Validation();
     }
 }
