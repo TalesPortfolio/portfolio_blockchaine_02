@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 23:20:09 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/17 09:08:24 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ export default class Blockchain{
      */
     
     constructor() {
-        this.block = [new Block(0, "", "Genesis Block")];
+        this.block = [new Block({index: this.nextIndex, previousHash: "" , data: "Genesis Block"}as Block)];
         this.nextIndex++;
     }
 

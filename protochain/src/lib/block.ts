@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 21:53:46 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/17 08:51:42 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@ export default class Block{
 
     /**
      * creates a new block
-     * @param index The block index in blockchain
-     * @param previousHash The previous block hash
-     * @param data The block data 
+     * @param block The block date
      */
-    constructor(index:number, previousHash: string, data: string)
+    constructor(block?: Block)
     {
-        this.index = index;
-        this.timestamp = Date.now();
-        this.previousHash = previousHash;
-        this.data = data;
-        this.hash = this.getHash();
+        this.index = block?.index || 0;
+        this.timestamp = block?.timestamp || Date.now();
+        this.previousHash = block?.previousHash || "";
+        this.data = block?.data || "";
+        this.hash = block?.hash || this.getHash();
     }
 
     /**

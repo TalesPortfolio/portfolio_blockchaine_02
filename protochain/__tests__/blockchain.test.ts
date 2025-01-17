@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/16 23:31:09 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/17 09:16:54 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ describe("Block tests", ()=>{
 
     test('Sould be valid (two blocks)', ()=>{
         const blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block(1, blockchain.block[0].hash, "block 2"));
+        const result = blockchain.addBlock(new Block({index:1,previousHash:blockchain.block[0].hash,data: "Block 2"}as Block));
         expect(result.success).toEqual(true);        
     })
 
     test('Sould NOT be valid', ()=>{
         const blockchain = new Blockchain();
-        blockchain.addBlock(new Block(1, blockchain.block[0].hash, "block 2"));
+        blockchain.addBlock(new Block({index:1,previousHash:blockchain.block[0].hash,data: "Block 2"}as Block));
         blockchain.block[1].data = "a transfere 2 para b"
         expect(blockchain.isValid().success).toEqual(false);        
     })
 
     test('Sould add block ', ()=>{
         const blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block(1, blockchain.block[0].hash, "block 2"));
+        const result = blockchain.addBlock(new Block({index:1,previousHash:blockchain.block[0].hash,data: "Block 2"}as Block));
         expect(result.success).toEqual(true);        
     })
 
@@ -53,7 +53,7 @@ describe("Block tests", ()=>{
 
     test('Sould NOT add block ', ()=>{
         const blockchain = new Blockchain();
-        const block = new Block(-1, blockchain.block[0].hash, "block 2")
+        const block = new Block({index:-1,previousHash:blockchain.block[0].hash,data: "Block 2"}as Block)
         const result = blockchain.addBlock(block);
         expect(result.success).toEqual(false);        
     })
