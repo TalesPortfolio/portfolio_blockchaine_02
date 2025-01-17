@@ -6,12 +6,14 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/17 09:16:54 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/17 10:27:43 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "../src/lib/block";
 import Blockchain from "../src/lib/blockchain";
+
+jest.mock("../src/lib/block")
 
 describe("Block tests", ()=>{
     
@@ -34,8 +36,12 @@ describe("Block tests", ()=>{
 
     test('Sould NOT be valid', ()=>{
         const blockchain = new Blockchain();
-        blockchain.addBlock(new Block({index:1,previousHash:blockchain.block[0].hash,data: "Block 2"}as Block));
-        blockchain.block[1].data = "a transfere 2 para b"
+        blockchain.addBlock(new Block({
+            index:1,
+            previousHash:blockchain.block[0].hash,
+            data: "Block 2"
+        }as Block));
+        blockchain.block[1].index = -1;
         expect(blockchain.isValid().success).toEqual(false);        
     })
 
