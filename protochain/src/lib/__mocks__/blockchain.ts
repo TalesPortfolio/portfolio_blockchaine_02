@@ -6,12 +6,13 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 11:07:10 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 18:56:27 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "./block";
 import Validation from "../validation";
+import BlockInfo from "../blockInfo";
 /**
  * mocked blockchain class
  */
@@ -56,5 +57,19 @@ export default class Blockchain {
   isValid(): Validation {
     return new Validation();
   }
-  
+
+  getFeePerTx(): number {
+    return 1;
+  }
+
+  getNextBlock(): BlockInfo {
+    return {
+      data: new Date().toString(),
+      difficulty: 0,
+      previousHash: this.getLastBlock().hash,
+      index: 1,
+      feePerTx: this.getFeePerTx(),
+      maxDifficulty: 62,
+    } as BlockInfo;
+  }
 }
