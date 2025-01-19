@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/01/18 20:29:14 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 11:07:10 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ import Validation from "../validation";
  */
 
 export default class Blockchain {
-  block: Block[];
+  blocks: Block[];
   nextIndex: number = 0;
 
   /**
@@ -25,7 +25,7 @@ export default class Blockchain {
    */
 
   constructor() {
-    this.block = [
+    this.blocks = [
       new Block({
         index: 0,
         hash: "abc",
@@ -38,22 +38,23 @@ export default class Blockchain {
   }
 
   getLastBlock(): Block {
-    return this.block[this.block.length - 1];
+    return this.blocks[this.blocks.length - 1];
   }
 
   addBlock(block: Block): Validation {
     if (block.index < 0) return new Validation(false, "Invalid mock block");
 
-    this.block.push(block);
+    this.blocks.push(block);
     this.nextIndex++;
     return new Validation();
   }
 
   getBlock(hash: string): Block | undefined {
-    return this.block.find((b) => b.hash === hash);
+    return this.blocks.find((b) => b.hash === hash);
   }
 
   isValid(): Validation {
     return new Validation();
   }
+  
 }

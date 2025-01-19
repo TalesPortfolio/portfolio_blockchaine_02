@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 22:32:27 by tales             #+#    #+#             */
-/*   Updated: 2025/01/18 19:53:40 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 11:34:09 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ const blockchain = new Blockchain();
 
 app.get('/status',(req, res, next)=>{
     res.json({
-        numberOfBlocks: blockchain.block.length,
+        numberOfBlocks: blockchain.blocks.length,
         isValid: blockchain.isValid(),
         lastBlock: blockchain.getLastBlock()
     })
 })
 
-app.get('/block/:indexOrHash', (req, res, next) => {
+app.get('/blocks/:indexOrHash', (req, res, next) => {
     let block;
     if(/^[0-9]+$/.test(req.params.indexOrHash))
-        block = blockchain.block[parseInt(req.params.indexOrHash)];
+        block = blockchain.blocks[parseInt(req.params.indexOrHash)];
     else
         block = blockchain.getBlock(req.params.indexOrHash);
 
@@ -57,11 +57,7 @@ app.post('/blocks',(req, res,next) => {
         res.status(400).json(validation);
 })
 
-if(process.argv.includes("--run")){
-    app.listen(PORT, () => {
-        console.log(`Blockchain server is running at ${PORT}`);
-    })
-}
+if(process.argv.includes("--run")){app.listen(PORT, () => {console.log(`Blockchain server is running at ${PORT}`);})}
 
 export {
     app
