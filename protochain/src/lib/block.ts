@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/17 08:51:42 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 15:09:43 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ export default class Block{
     hash:string;
     previousHash: string;
     data: string;
+    nonce: number;
+    miner: string;
     
 
     /**
@@ -32,6 +34,8 @@ export default class Block{
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
         this.data = block?.data || "";
+        this.nonce = block?.nonce || 0;
+        this.miner = block?.miner || "";
         this.hash = block?.hash || this.getHash();
     }
 
@@ -39,20 +43,43 @@ export default class Block{
      * cria o Hash concatena tudos os paramentro e depois converte de bit para string
      */
     getHash():string {
-        return sha256(this.index + this.data + this.timestamp + this.previousHash).toString();
+        return sha256(this.index + this.data + this.timestamp + this.previousHash + this.nonce +this.miner).toString();
+    }
+
+    /**
+     * Generates a new valid hash for this block with the specified difficulty
+     * @param difficulty The Blockchain current difficulty
+     * @param miner The miner wallet address
+     */
+    mine(difficulty: number, miner:string){
+        this.miner = miner;
+        const prefix = new Array(difficulty + 1).join("0");
+
+        do{
+            this.nonce++;
+            this.hash = this.getHash();   
+        }
+        while(!this.hash.startsWith(prefix));
     }
 
     //metodo para validar uma operacao
     /**
      * Validade the block
+     * @param previousHash The previous block hash
+     * @param previousIndex
      * @returns returns if the block is valid
      */
-    isValid(previousHash: string, previousIndex: number):Validation{
+    
+    isValid(previousHash: string, previousIndex: number, difficult: number,):Validation{
         if(previousIndex !== this.index - 1)return new Validation(false, "Inavalid index");
-        if(this.hash !== this.getHash()) return new Validation(false, "Inavalid hash");;
-        if(!this.data) return new Validation(false, "Inavalid data");;
+        if(!this.data) return new Validation(false, "Inavalid data");
         if(this.timestamp < 1) return new Validation(false, "Inavalid timestamp");
         if(this.previousHash !== previousHash) return new Validation(false, "Inavalid previousHash");
+        if(!this.nonce || !this.miner) return new Validation(false, "No minid");
+        
+        const prefix = new Array(difficult + 1).join("0");
+        if(this.hash !== this.getHash() || !this.hash.startsWith(prefix)) 
+            return new Validation(false, "Inavalid hash");
         return new Validation();
     }
 }
