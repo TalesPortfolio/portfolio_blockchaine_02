@@ -6,12 +6,14 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 15:09:43 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 19:33:27 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
+import BlockInfo from './blockInfo';
+
 
 //Cria uma classes e estou exportando a minha casse
 export default class Block{
@@ -81,5 +83,14 @@ export default class Block{
         if(this.hash !== this.getHash() || !this.hash.startsWith(prefix)) 
             return new Validation(false, "Inavalid hash");
         return new Validation();
+    }
+
+    //static serve par acompartilha com todo o arquivos
+    static fromBlockInfo(blockInfo: BlockInfo): Block {
+        const block = new Block();
+        block.index = blockInfo.index;
+        block.previousHash = blockInfo.previousHash;
+        block.data = blockInfo.data;
+        return block;
     }
 }
