@@ -6,11 +6,12 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:01:00 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 16:48:29 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 20:37:11 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "../src/lib/block";
+import BlockInfo from "../src/lib/blockInfo";
 
 describe("Block tests", () => {
   
@@ -28,6 +29,22 @@ describe("Block tests", () => {
     const valid = block.isValid(genesis.hash, genesis.index,exampleDifficulty);
     console.log(valid.message);
     expect(valid.success).toBeTruthy();//ou toEqual
+  });
+
+  test("Sould create from block info ", () => {
+    const block = Block.fromBlockInfo({
+      index: 1,
+      data:"Block 2",
+      difficulty: exampleDifficulty,
+      feePerTx: 1,
+      maxDifficulty: 62,
+      previousHash: genesis.hash
+    }as BlockInfo);
+    block.mine(exampleDifficulty, exampleMiner);
+    
+    const valid = block.isValid(genesis.hash, genesis.index,exampleDifficulty);
+    console.log(valid); // Verifica o retorno real
+    expect(valid.success).toBeTruthy();
   });
 
   test("Sould NOT be valid (fallbacks)< Deveria ser valido (traducao) >", () => {

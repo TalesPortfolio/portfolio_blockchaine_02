@@ -6,22 +6,25 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 22:32:27 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 18:48:22 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/19 20:30:43 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+import dotenv from 'dotenv'
+dotenv.config();
 
 import  express, { Request, Response, NextFunction }  from "express";  
 import morgan from "morgan";
 import Blockchain from "../lib/blockchain";
 import Block from "../lib/block";
 
-const PORT: number = 3000;
+const PORT: number = parseInt(`${process.env.BLOCCHAIN_PORT || 3000}`);
 
 const app = express();
-
+/* c8 ignore start */
 if(process.argv.includes("--run"))
     app.use(morgan('tiny'));
-
+/* c8 ignore stop */
 app.use(express.json());
 
 const blockchain = new Blockchain();
@@ -61,8 +64,9 @@ app.post('/blocks',(req:Request, res:Response,next: NextFunction) => {
         res.status(400).json(validation);
 })
 
+/* c8 ignore start */
 if(process.argv.includes("--run")){app.listen(PORT, () => {console.log(`Blockchain server is running at ${PORT}`);})}
-
+/* c8 ignore stop */
 export {
     app
 }
