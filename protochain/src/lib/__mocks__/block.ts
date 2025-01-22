@@ -6,11 +6,12 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/17 10:15:39 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/22 19:56:45 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+import Transaction from "../transaction";
 import Validation from "../validation";
 
 //MOcked block class
@@ -19,7 +20,7 @@ export default class Block{
     timestamp: number;
     hash:string;
     previousHash: string;
-    data: string;
+    transactions:Transaction[];
     
 
     /**
@@ -31,7 +32,7 @@ export default class Block{
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
-        this.data = block?.data || "";
+        this.transactions = block?.transactions || [] as Transaction[];
         this.hash = block?.hash || this.getHash();
     }
 

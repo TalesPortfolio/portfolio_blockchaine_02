@@ -6,65 +6,87 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 17:48:25 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/22 19:54:29 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "../src/lib/block";
 import Blockchain from "../src/lib/blockchain";
+import Transaction from "../src/lib/transaction";
 
-jest.mock("../src/lib/block")
+jest.mock("../src/lib/block");
+jest.mock('../src/lib/transaction');
 
 describe("Block tests", ()=>{
     
     //posso usar tambem it() no lugar de test()
-    test('Sould has genesis block < Deveria ser valido (traducao) >', ()=>{
+    test('Should has genesis block < Deveria ser valido >', ()=>{
         const blockchain = new Blockchain();
         expect(blockchain.blocks.length).toEqual(1);        
     })
 
-    test('Sould be valid (Genesis)', ()=>{
+    test('Should be valid (Genesis)', ()=>{
         const blockchain = new Blockchain();
         expect(blockchain.isValid().success).toEqual(true);        
     })
 
-    test('Sould be valid (two blocks)', ()=>{
+    test('Should be valid (two blocks)', ()=>{
         const blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block({index:1,previousHash:blockchain.blocks[0].hash,data: "Block 2"}as Block));
+        const result = blockchain.addBlock(new Block({
+            index:1,
+            previousHash:blockchain.blocks[0].hash,
+            transactions: [new Transaction({
+                data: "block 2"
+            } as Transaction)]
+        }as Block));
         expect(result.success).toEqual(true);        
     })
 
-    test('Sould NOT be valid', ()=>{
+    test('Should NOT be valid', ()=>{
         const blockchain = new Blockchain();
         blockchain.addBlock(new Block({
             index:1,
             previousHash:blockchain.blocks[0].hash,
-            data: "Block 2"
+            transactions: [new Transaction({
+                data: "block 2"
+            } as Transaction)]
         }as Block));
         blockchain.blocks[1].index = -1;
         expect(blockchain.isValid().success).toEqual(false);        
     })
 
-    test('Sould add block ', ()=>{
+    test('Should add block ', ()=>{
         const blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block({index:1,previousHash:blockchain.blocks[0].hash,data: "Block 2"}as Block));
+        const result = blockchain.addBlock(new Block({
+            index:1,
+            previousHash:blockchain.blocks[0].hash,
+            transactions: [new Transaction({
+                data: "block 2"
+            } as Transaction)]
+        }as Block));
         expect(result.success).toEqual(true);        
     })
 
-    test('Sould get block ', ()=>{
+    test('Should get block ', ()=>{
         const blockchain = new Blockchain();
         const block = blockchain.getBlock(blockchain.blocks[0].hash);
         expect(block).toBeTruthy();        
     })
 
-    test('Sould NOT add block ', ()=>{
+    test('Should NOT add block ', ()=>{
         const blockchain = new Blockchain();
-        const block = new Block({index:-1,previousHash:blockchain.blocks[0].hash,data: "Block 2"}as Block)
+        const block = new Block({
+            index:-1,
+            previousHash:blockchain.blocks[0].hash,
+            transactions: [new Transaction({
+                data: "block 2"
+            } as Transaction)]
+        }as Block)
         const result = blockchain.addBlock(block);
         expect(result.success).toEqual(false);        
     })
 
-    test('Sould get next block info', () => {
+    test('Should get next block info', () => {
         const blockchain = new Blockchain();
         const info = blockchain.getNextBlock();
         expect(info.index).toEqual(1);

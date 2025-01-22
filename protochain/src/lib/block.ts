@@ -6,13 +6,15 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 19:33:27 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/22 20:01:40 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
 import BlockInfo from './blockInfo';
+import Transaction from './transaction';
+import TransactionType from './transactionTypes';
 
 
 //Cria uma classes e estou exportando a minha casse
@@ -21,7 +23,7 @@ export default class Block{
     timestamp: number;
     hash:string;
     previousHash: string;
-    data: string;
+    transactions:Transaction[];
     nonce: number;
     miner: string;
     
@@ -35,7 +37,11 @@ export default class Block{
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
-        this.data = block?.data || "";
+        
+        this.transactions = block?.transactions 
+            ? block.transactions.map(tx => new Transaction(tx))
+            : [] as Transaction[];
+                
         this.nonce = block?.nonce || 0;
         this.miner = block?.miner || "";
         this.hash = block?.hash || this.getHash();
@@ -45,7 +51,10 @@ export default class Block{
      * cria o Hash concatena tudos os paramentro e depois converte de bit para string
      */
     getHash():string {
-        return sha256(this.index + this.data + this.timestamp + this.previousHash + this.nonce +this.miner).toString();
+        const txs = this.transactions && this.transactions.length
+            ? this.transactions.map(tx => tx.hash).reduce((a, b) => a + b)
+            :"";
+        return sha256(this.index +  txs + this.timestamp + this.previousHash + this.nonce +this.miner).toString();
     }
 
     /**
@@ -73,8 +82,19 @@ export default class Block{
      */
     
     isValid(previousHash: string, previousIndex: number, difficult: number,):Validation{
+        
+        if(this.transactions && this.transactions.length){
+            if(this.transactions.filter(tx => tx.type === TransactionType.FEE).length > 1)
+                return new Validation(false, "Too many fees.");
+            
+            const validations = this.transactions.map(tx => tx.isValid());
+            const erros = validations.filter(v => !v.success).map(v => v.message);
+            if(erros.length > 0)
+                return new Validation(false, "Invalid block due to invalid tx: " + erros.reduce((a, b) => a + b));
+        }
+
+        
         if(previousIndex !== this.index - 1)return new Validation(false, "Inavalid index");
-        if(!this.data) return new Validation(false, "Inavalid data");
         if(this.timestamp < 1) return new Validation(false, "Inavalid timestamp");
         if(this.previousHash !== previousHash) return new Validation(false, "Inavalid previousHash");
         if(!this.nonce || !this.miner) return new Validation(false, "No minid");
@@ -90,7 +110,7 @@ export default class Block{
         const block = new Block();
         block.index = blockInfo.index;
         block.previousHash = blockInfo.previousHash;
-        block.data = blockInfo.data;
+        block.transactions = blockInfo.transactions;
         return block;
     }
 }

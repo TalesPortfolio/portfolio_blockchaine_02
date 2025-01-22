@@ -6,13 +6,15 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 18:56:27 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/22 19:59:06 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "./block";
 import Validation from "../validation";
 import BlockInfo from "../blockInfo";
+import Transaction from "./transaction";
+import TransactionType from "../transactionTypes";
 /**
  * mocked blockchain class
  */
@@ -31,7 +33,10 @@ export default class Blockchain {
         index: 0,
         hash: "abc",
         previousHash: "",
-        data: "Genesis Block",
+        transactions: [new Transaction({
+          data:"tx1",
+          type: TransactionType.FEE
+        } as Transaction)],
         timestamp: Date.now(),
       } as Block),
     ];
@@ -64,7 +69,9 @@ export default class Blockchain {
 
   getNextBlock(): BlockInfo {
     return {
-      data: new Date().toString(),
+      transactions:[new Transaction({
+        data: new Date().toString()
+      } as Transaction)],
       difficulty: 0,
       previousHash: this.getLastBlock().hash,
       index: 1,
