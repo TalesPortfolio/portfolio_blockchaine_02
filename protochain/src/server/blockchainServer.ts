@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 22:32:27 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 13:36:22 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 20:51:11 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ const blockchain = new Blockchain();
 
 app.get('/status',(req:Request, res:Response,next: NextFunction)=>{
     res.json({
-        numberOfBlocks: blockchain.blocks.length,
+        mempool: blockchain.mempool.length,
+        blocks: blockchain.blocks.length,
         isValid: blockchain.isValid(),
         lastBlock: blockchain.getLastBlock()
     })

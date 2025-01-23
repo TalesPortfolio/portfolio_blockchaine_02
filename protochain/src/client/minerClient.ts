@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 18:57:59 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 20:29:26 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 20:43:45 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ let totalMined = 0;
 async function mine() {
     console.log("Getting next block info...")
     const { data } = await axios.get(`${BLOCKCHAIN_SERVER}blocks/next`);
+    if(!data){
+        console.log("No tx found. Waiting...")
+        return setTimeout(()=>{
+            mine();
+        },5000)
+    }
     const blockInfo = data as BlockInfo;
     
     const newBlock = Block.fromBlockInfo(blockInfo);
@@ -52,9 +58,7 @@ async function mine() {
     }
     
 
-    setTimeout(()=>{
-        mine();
-    },1000)
+  
 }
 
 mine()

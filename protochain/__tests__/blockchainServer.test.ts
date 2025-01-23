@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:43 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 18:41:07 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 17:29:58 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,14 @@ describe('BlockchainServer Tests', () => {
             .send(block);
 
         expect(response.status).toEqual(400);
+    })
+
+    test('GET /transactions/:hash - Should get transactions', async()=>{
+        const response = await request(app)
+            .get('/transactions/abc');
+
+        expect(response.status).toEqual(200);
+        expect(response.body.mempoolIndex).toEqual(0);
     })
     
 
