@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/01/22 21:04:16 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 13:15:01 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import Validation from "./validation";
 import BlockInfo from "./blockInfo";
 import Transaction from "./transaction";
 import TransactionType from "./transactionTypes";
+import TransactionSearch from "./transactionSearch";
 /**
  * blockchain class
  */
@@ -90,6 +91,24 @@ export default class Blockchain{
 
     getBlock(hash: string): Block | undefined{
         return this.blocks.find(b => b.hash === hash);   
+    }
+
+    getTransaction(hash: string) : TransactionSearch{
+        const mempoolIndex =  this.mempool.findIndex(tx => tx.hash === hash);
+        if(mempoolIndex !== -1)
+            return{
+                mempoolIndex,
+                transaction: this.mempool[mempoolIndex]
+            }as TransactionSearch
+
+        const blockIndex = this.blocks.findIndex(b => b.transactions.some(tx => tx.hash === hash));
+        if(blockIndex !== -1) {
+            return {
+                blockIndex,
+                transaction: this.blocks[blockIndex].transactions.find(tx => tx.hash === hash)
+            } as TransactionSearch;
+        }
+        return { blockIndex: -1, mempoolIndex: -1} as TransactionSearch;
     }
 
     isValid(): Validation {

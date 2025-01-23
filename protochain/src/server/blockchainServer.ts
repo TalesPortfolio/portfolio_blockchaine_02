@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 22:32:27 by tales             #+#    #+#             */
-/*   Updated: 2025/01/19 20:30:43 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 13:23:56 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ import  express, { Request, Response, NextFunction }  from "express";
 import morgan from "morgan";
 import Blockchain from "../lib/blockchain";
 import Block from "../lib/block";
+import Transaction from '../lib/transaction';
 
 const PORT: number = parseInt(`${process.env.BLOCCHAIN_PORT || 3000}`);
 
@@ -63,6 +64,30 @@ app.post('/blocks',(req:Request, res:Response,next: NextFunction) => {
     else
         res.status(400).json(validation);
 })
+
+app.get('/transactions/:hash?',(req:Request, res:Response,next: NextFunction) => {
+    if(req.params.hash){
+        res.json(blockchain.getTransaction(req.params.hash));
+    }
+    
+    res.json({
+        next: blockchain.mempool.slice(0,Blockchain.TX_PER_BLOCK),
+        total: blockchain.mempool.length
+    });
+})
+
+app.post('/transactions',(req:Request, res:Response,next: NextFunction) => {
+    if(req.body.hash === undefined) return res.sendStatus(422);
+    
+    const tx = new Transaction(req.body as Transaction);
+    const validation = blockchain.addTransaction(tx);
+    
+    if(validation.success)
+        res.status(201).json(tx);
+    else
+        res.status(400).json(validation);
+})
+
 
 /* c8 ignore start */
 if(process.argv.includes("--run")){app.listen(PORT, () => {console.log(`Blockchain server is running at ${PORT}`);})}
