@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 22:32:27 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 13:23:56 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 13:36:22 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ app.get('/transactions/:hash?',(req:Request, res:Response,next: NextFunction) =>
         next: blockchain.mempool.slice(0,Blockchain.TX_PER_BLOCK),
         total: blockchain.mempool.length
     });
-})
+}) 
 
 app.post('/transactions',(req:Request, res:Response,next: NextFunction) => {
     if(req.body.hash === undefined) return res.sendStatus(422);

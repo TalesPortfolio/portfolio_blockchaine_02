@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 13:15:01 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 15:43:32 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ export default class Blockchain{
             return null;
         
         const transactions = this.mempool.slice(0, Blockchain.TX_PER_BLOCK)
-        
         const difficulty = this.getDifficulty();
         const previousHash = this.getLastBlock().hash;
         const index = this.blocks.length;

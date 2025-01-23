@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:01:00 by tales             #+#    #+#             */
-/*   Updated: 2025/01/22 20:13:26 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/23 15:36:48 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ describe("Block tests", () => {
   const exampleMiner = "Tales";
   const exampleDifficulty = 0;
   let genesis: Block;
+  
   beforeAll(() => {
     genesis = new Block({
       transactions: [new Transaction({
