@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:21:51 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 12:55:05 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 13:14:24 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ export default class Transaction{
             return new Validation(false,"Invalid hash");
         if(!this.to)
             return new Validation(false, "Invalid to.");
+        if(this.txInput){
+            const validation = this.txInput.isValid();
+            if(!validation.success)
+                return new Validation(false, `Invalid tx: ${validation.message}`)
+        }
         return new Validation();
     }
 }
