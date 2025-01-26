@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:08:23 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 12:18:52 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 16:22:05 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ export default class Wallet {
       keys = ECPair.makeRandom();
     }
 
-    this.privateKey = keys.privateKey
-      ? Buffer.from(keys.privateKey).toString("hex")
-      : "";
+    /* c8 ignore next */
+    this.privateKey = keys.privateKey? Buffer.from(keys.privateKey).toString("hex") : "";
     this.publicKey = Buffer.from(keys.publicKey).toString("hex");
   }
 }

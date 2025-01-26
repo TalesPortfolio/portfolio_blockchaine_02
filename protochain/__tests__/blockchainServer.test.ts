@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:43 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 17:29:58 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 17:18:21 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@ import request from 'supertest';
 import {describe, test, expect, jest} from '@jest/globals';
 import {app} from '../src/server/blockchainServer';
 import Block from '../src/lib/block';
+import Transaction from '../src/lib/transaction';
+import TransactionInput from '../src/lib/transactionInput';
 
 jest.mock('../src/lib/block');
 jest.mock('../src/lib/blockchain');
+jest.mock('../src/lib/transaction');
+jest.mock('../src/lib/transactionInput');
+
 
 describe('BlockchainServer Tests', () => {
     test('GET /status - Should return status', async()=>{
@@ -99,7 +104,21 @@ describe('BlockchainServer Tests', () => {
         expect(response.status).toEqual(200);
         expect(response.body.mempoolIndex).toEqual(0);
     })
-    
+
+   /* test('POST /transactions/  - Should add tx', async()=>{
+        const tx = new Transaction({
+            txInput: new TransactionInput,
+            to:'carteiraTo'
+        }as Transaction);
+        
+        const response = await request(app)
+            .post('/transactions/')
+            .send(tx)
+        
+        console.log(response.error);
+        expect(response.status).toEqual(201);
+    })
+    */
 
 })
 

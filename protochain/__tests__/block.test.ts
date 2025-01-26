@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:01:00 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 14:23:51 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 15:19:44 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ describe("Block tests", () => {
     } as Block);
   });
 
-  test("Sould be valid", () => {
+  test("Should be valid", () => {
     const block = new Block({
       index:1,
       previousHash:genesis.hash,
@@ -47,7 +47,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeTruthy();//ou toEqual
   });
 
-  test("Sould create from block info ", () => {
+  test("Should create from block info ", () => {
     const block = Block.fromBlockInfo({
       transactions: [new Transaction({
         txInput: new TransactionInput()
@@ -64,7 +64,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeTruthy();
   });
 
-  test("Sould NOT be valid (2 FEE)", () => {
+  test("Should NOT be valid (2 FEE)", () => {
     const block = new Block({
       index:1,
       previousHash:genesis.hash,
@@ -85,25 +85,27 @@ describe("Block tests", () => {
   });
 
   test("Sould NOT be valid (invalid tx)", () => {
+
+ 
     const block = new Block({
       index:1,
       previousHash:genesis.hash,
-      transactions: [
-        new Transaction()]
+      transactions: [new Transaction()]
     } as Block);
     block.mine(exampleDifficulty, exampleMiner);
     
+    block.transactions[0].to = "";
     const valid = block.isValid(genesis.hash, genesis.index,exampleDifficulty);
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (fallbacks)", () => {
+  test("Should NOT be valid (fallbacks)", () => {
     const block = new Block();
     const valid = block.isValid(genesis.hash, genesis.index,exampleDifficulty);
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (previous hash)", () => {
+  test("Should NOT be valid (previous hash)", () => {
     const block = new Block({
       index:1,
       previousHash:"abc",
@@ -129,7 +131,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (empty hash) <Nao deve ser valido>", () => {
+  test("Should NOT be valid (empty hash) <Nao deve ser valido>", () => {
     const block = new Block({
       index:1,
       previousHash:genesis.hash,
@@ -143,7 +145,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (no miner) ", () => {
+  test("Should NOT be valid (no miner) ", () => {
     const block = new Block({
       index:1,
       previousHash:genesis.hash,
@@ -156,7 +158,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (txInput) ", () => {
+  test("Should NOT be valid (txInput) ", () => {
     const txInput = new TransactionInput();
     txInput.amount = -1;
     
@@ -171,7 +173,7 @@ describe("Block tests", () => {
     expect(valid.success).toBeFalsy();
   });
 
-  test("Sould NOT be valid (index)", () => {
+  test("Should NOT be valid (index)", () => {
     const block = new Block({
       index:-1,
       previousHash:genesis.hash,

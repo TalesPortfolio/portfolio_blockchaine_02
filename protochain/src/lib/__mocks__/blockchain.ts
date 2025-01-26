@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 17:28:52 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 15:00:04 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import BlockInfo from "../blockInfo";
 import Transaction from "./transaction";
 import TransactionType from "../transactionTypes";
 import TransactionSearch from "../transactionSearch";
+import TransactionInput from "./transactionInput";
 /**
  * mocked blockchain class
  */
@@ -37,7 +38,7 @@ export default class Blockchain {
         hash: "abc",
         previousHash: "",
         transactions: [new Transaction({
-          data:"tx1",
+          txInput: new TransactionInput(),
           type: TransactionType.FEE
         } as Transaction)],
         timestamp: Date.now(),
@@ -90,7 +91,7 @@ export default class Blockchain {
   getNextBlock(): BlockInfo {
     return {
       transactions:[new Transaction({
-        data: new Date().toString()
+        txInput: new TransactionInput()
       } as Transaction)],
       difficulty: 0,
       previousHash: this.getLastBlock().hash,

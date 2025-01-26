@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:21:51 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 13:14:24 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 16:48:55 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,25 @@ export default class Transaction{
     type: TransactionType;
     timestamp: number;
     hash: string;
-    txInput: TransactionInput;
+    txInput: TransactionInput | undefined;
     to: string;
 
     constructor(tx?: Transaction){
         this.type = tx?.type || TransactionType.REGULAR;
         this.timestamp = tx?.timestamp || Date.now();
-        this.to = tx?.to || "";
+        this.to = tx?.to || "carteiraTo";
+        
+        if(tx && tx.txInput)
+            this.txInput = new TransactionInput(tx.txInput);
+        else
+            this.txInput = new TransactionInput();
+        
         this.hash = tx?.hash || this.getHash();
-        this.txInput = new TransactionInput(tx?.txInput) || "";
     }
 
     getHash(): string {
-        return sha256(this.type + this.txInput.getHash() + this.to + this.timestamp).toString();
+        const from = this. txInput ? this.txInput.getHash() : "";
+        return sha256(this.type + from + this.to + this.timestamp).toString();
     }
 
     isValid():Validation{

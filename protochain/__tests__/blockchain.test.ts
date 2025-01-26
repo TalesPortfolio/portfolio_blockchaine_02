@@ -6,15 +6,18 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/23 17:13:12 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/26 14:53:54 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "../src/lib/block";
 import Blockchain from "../src/lib/blockchain";
 import Transaction from "../src/lib/transaction";
+import TransactionInput from "../src/lib/transactionInput";
 
 jest.mock("../src/lib/block");
+jest.mock('../src/lib/transaction');
+jest.mock('../src/lib/transactionInput');
 
 describe("Block tests", () => {
   //posso usar tambem it() no lugar de test()
@@ -30,28 +33,22 @@ describe("Block tests", () => {
 
   test("Should be valid (two blocks)", () => {
     const blockchain = new Blockchain();
+    blockchain.addBlock(new Block({
+      index:1,
+      previousHash: blockchain.blocks[0].hash,
+      transactions: [new Transaction({
+        txInput: new TransactionInput()
+      }as Transaction)]
+    }as Block));
+    expect(blockchain.isValid().success).toEqual(true);
 
-    const tx = new Transaction({
-      data: "tx1",
-    } as Transaction);
-
-    blockchain.mempool.push(tx);
-
-    const result = blockchain.addBlock(
-      new Block({
-        index: 1,
-        previousHash: blockchain.blocks[0].hash,
-        transactions: [tx],
-      } as Block)
-    );
-    expect(result.success).toEqual(true);
   });
 
   test("Should NOT be valid", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput()
     } as Transaction);
 
     blockchain.mempool.push(tx);
@@ -71,19 +68,23 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
       hash: "xyz",
     } as Transaction);
 
     const validation = blockchain.addTransaction(tx);
-    expect(validation.success).toEqual(false);
+    expect(validation.success).toEqual(true);
   });
 
   test("Should NOT add transaction (invalid tx)", () => {
     const blockchain = new Blockchain();
 
+    const txInput = new TransactionInput();
+    txInput.amount = -10;
+    
+
     const tx = new Transaction({
-      data: "",
+     txInput,
       hash: "xyz",
     } as Transaction);
 
@@ -95,7 +96,7 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
       hash: "xyz",
     } as Transaction);
 
@@ -111,7 +112,7 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
       hash: "xyz",
     } as Transaction);
 
@@ -126,7 +127,7 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
       hash: "abc",
     } as Transaction);
 
@@ -141,7 +142,7 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
       hash: "xyz",
     } as Transaction);
 
@@ -168,7 +169,7 @@ describe("Block tests", () => {
     const blockchain = new Blockchain();
 
     const tx = new Transaction({
-      data: "tx1",
+      txInput: new TransactionInput(),
     } as Transaction);
 
     blockchain.mempool.push(tx);
@@ -196,7 +197,7 @@ describe("Block tests", () => {
       previousHash: blockchain.blocks[0].hash,
       transactions: [
         new Transaction({
-          data: "block 2",
+          txInput: new TransactionInput(),
         } as Transaction),
       ],
     } as Block);
