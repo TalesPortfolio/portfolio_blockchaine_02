@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:00:59 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 18:24:01 by tales            ###   ########.fr       */
+/*   Updated: 2025/01/28 18:42:09 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ import axios from "axios";
 import readline from "readline";
 import Wallet from "../lib/wallet";
 import { Console } from "console";
+import Transaction from "../lib/transaction";
+import TransactionInput from "../lib/transactionInput";
+import TransactionType from "../lib/transactionTypes";
 
 const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
 
@@ -47,10 +50,10 @@ function menu() {
           recoverWallet();
           break;
         case "3":
-            getBalance();
+          getBalance();
           break;
         case "4":
-            sendTx();
+          sendTx();
           break;
         default: {
           console.log("Wrong option");
@@ -91,28 +94,65 @@ function recoverWallet() {
   });
 }
 
-function getBalance(){
-    console.clear();
+function getBalance() {
+  console.clear();
 
-    if (!myWalletPub){
-        console.log(`You don't have a wallet yet.`)
-        return preMenu();
-    }
+  if (!myWalletPub) {
+    console.log(`You don't have a wallet yet.`);
+    return preMenu();
+  }
 
-    //TODO get balance via API
-    preMenu();
+  //TODO get balance via API
+  preMenu();
 }
 
-function sendTx(){
-    console.clear();
+function sendTx() {
+  console.clear();
 
-    if (!myWalletPub){
-        console.log(`You don't have a wallet yet.`)
-        return preMenu();
+  if (!myWalletPub) {
+    console.log(`You don't have a wallet yet.`);
+    return preMenu();
+  }
+
+  console.log(`Your wallet is ${myWalletPub}`);
+  rl.question(`To wallet`, (toWallet) => {
+    if (toWallet.length < 66) {
+      console.log(`Invalid wallet.`);
+      return preMenu();
     }
 
-    //TODO send TX via API
-    preMenu();
+    rl.question(`Amount: `,async (amountStr) => {
+      const amount = parseInt(amountStr);
+      if (!amount) {
+        console.log(`Invalid amount`);
+        return preMenu();
+      }
+
+      const tx = new Transaction();
+      tx.timestamp = Date.now();
+      tx.to = toWallet;
+      tx.type = TransactionType.REGULAR;
+      tx.txInput = new TransactionInput({
+        amount,
+        fromAddress: myWalletPub
+      }as TransactionInput);
+
+      tx.txInput.sign(myWalletPriv);
+      tx.hash = tx.getHash();
+
+      try {
+          const txResponse = await axios.post(`${BLOCKCHAIN_SERVER}transactions/`,tx);
+          console.log(`Transaction accepted. waiting the miners!`);
+          console.log(txResponse.data.hash);
+      } catch (err: any) {
+        console.error(err.response ? err.response.data : err.message)
+      }
+
+      return preMenu();
+
+    });
+  });
+  preMenu();
 }
 
 menu();
