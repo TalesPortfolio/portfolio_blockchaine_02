@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:00:59 by tales             #+#    #+#             */
-/*   Updated: 2025/01/28 18:42:09 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/13 16:21:42 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { Console } from "console";
 import Transaction from "../lib/transaction";
 import TransactionInput from "../lib/transactionInput";
 import TransactionType from "../lib/transactionTypes";
+import { hash } from "crypto";
 
 const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
 
@@ -41,6 +42,7 @@ function menu() {
     console.log("2 - Recover Wallet");
     console.log("3 - Balance");
     console.log("4 - Send tx");
+    console.log("5 - Search tx");
     rl.question("Choose your option: ", (answer) => {
       switch (answer) {
         case "1":
@@ -55,6 +57,9 @@ function menu() {
         case "4":
           sendTx();
           break;
+          case "5":
+            searchTx();
+            break;
         default: {
           console.log("Wrong option");
           menu();
@@ -114,8 +119,8 @@ function sendTx() {
     return preMenu();
   }
 
-  console.log(`Your wallet is ${myWalletPub}`);
-  rl.question(`To wallet`, (toWallet) => {
+  console.log(`Your wallet is: ${myWalletPub}`);
+  rl.question(`To wallet: `, (toWallet) => {
     if (toWallet.length < 66) {
       console.log(`Invalid wallet.`);
       return preMenu();
@@ -153,6 +158,15 @@ function sendTx() {
     });
   });
   preMenu();
+}
+
+function searchTx(){
+  console.clear();
+  rl.question(`Your tx hash: `, async (hash)=>{
+    const response = await axios.get(`${BLOCKCHAIN_SERVER}transactions/${hash}`);
+    console.log(response.data);
+    return preMenu();
+  })
 }
 
 menu();

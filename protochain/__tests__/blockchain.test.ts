@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 14:53:54 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/13 15:58:12 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,24 @@ describe("Block tests", () => {
     expect(validation.success).toEqual(true);
   });
 
+  test("Should NOT add transaction (pending tx)", () => {
+    const blockchain = new Blockchain();
+
+    const tx = new Transaction({
+      txInput: new TransactionInput(),
+      hash: "xyz",
+    } as Transaction);
+
+    const tx2 = new Transaction({
+      txInput: new TransactionInput(),
+      hash: "xyz2",
+    } as Transaction);
+
+
+    const validation = blockchain.addTransaction(tx2);
+    expect(validation.success).toBeTruthy();
+  });
+
   test("Should NOT add transaction (invalid tx)", () => {
     const blockchain = new Blockchain();
 
@@ -107,21 +125,6 @@ describe("Block tests", () => {
     const validation = blockchain.addTransaction(tx);
     expect(validation.success).toEqual(false);
   });
-
-  test("Should NOT add transaction (duplicate in mempool)", () => {
-    const blockchain = new Blockchain();
-
-    const tx = new Transaction({
-      txInput: new TransactionInput(),
-      hash: "xyz",
-    } as Transaction);
-
-    blockchain.mempool.push(tx);
-
-    const validation = blockchain.addTransaction(tx);
-    expect(validation.success).toEqual(false);
-  });
-
 
   test("Should get transaction (mempool)", () => {
     const blockchain = new Blockchain();
