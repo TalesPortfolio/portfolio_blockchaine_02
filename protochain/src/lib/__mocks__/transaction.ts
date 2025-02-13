@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:29:21 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 15:14:28 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/13 18:21:39 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ export default class Transaction{
     type: TransactionType;
     timestamp: number;
     hash: string;
-    to: string;
     txInput: TransactionInput
+    to: string;
 
     constructor(tx?: Transaction){
         this.type = tx?.type || TransactionType.REGULAR;
