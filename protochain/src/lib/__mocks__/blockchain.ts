@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 15:00:04 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/13 17:11:33 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ export default class Blockchain {
       transactions:[new Transaction({
         txInput: new TransactionInput()
       } as Transaction)],
-      difficulty: 0,
+      difficulty: 1,
       previousHash: this.getLastBlock().hash,
       index: 1,
       feePerTx: this.getFeePerTx(),

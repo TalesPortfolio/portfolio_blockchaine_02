@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   blockchain.ts                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 09:49:09 by tales             #+#    #+#             */
-/*   Updated: 2025/02/13 15:57:18 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 import Block from "./block";
 import Validation from "./validation";
 import BlockInfo from "./blockInfo";
@@ -54,7 +41,7 @@ export default class Blockchain{
     }
     
     getDifficulty():number{
-        return Math.ceil(this.blocks.length / Blockchain.DIFFICULTY_FACTOR);
+        return Math.ceil(this.blocks.length / Blockchain.DIFFICULTY_FACTOR) + 1;
     }
     
     addTransaction(transaction:Transaction): Validation {

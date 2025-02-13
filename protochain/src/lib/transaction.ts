@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   transaction.ts                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 17:21:51 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 16:48:55 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 import TransactionType from "./transactionTypes";
 import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
@@ -34,7 +22,7 @@ export default class Transaction{
         if(tx && tx.txInput)
             this.txInput = new TransactionInput(tx.txInput);
         else
-            this.txInput = new TransactionInput();
+            this.txInput = undefined;
         
         this.hash = tx?.hash || this.getHash();
     }

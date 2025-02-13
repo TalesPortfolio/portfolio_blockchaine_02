@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   block.ts                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 09:33:56 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 14:30:20 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
 import BlockInfo from './blockInfo';
@@ -84,13 +72,20 @@ export default class Block{
     isValid(previousHash: string, previousIndex: number, difficult: number,):Validation{
         
         if(this.transactions && this.transactions.length){
-            if(this.transactions.filter(tx => tx.type === TransactionType.FEE).length > 1)
+            const feeTxs = this.transactions.filter(tx => tx.type === TransactionType.FEE );
+            if(!feeTxs.length)
+                return new Validation(false, "No fee tx.");
+
+            if(feeTxs.length > 1)
                 return new Validation(false, "Too many fees.");
-            
+
+            if(feeTxs[0].to !== this.miner)
+                return new Validation(false, "Invalid fee tx: different from miner.")
+
             const validations = this.transactions.map(tx => tx.isValid());
-            const erros = validations.filter(v => !v.success).map(v => v.message);
-            if(erros.length > 0)
-                return new Validation(false, "Invalid block due to invalid tx: " + erros.reduce((a, b) => a + b));
+            const errors = validations.filter(v => !v.success).map(v => v.message);
+            if(errors.length > 0)
+                return new Validation(false, "Invalid block due to invalid tx: " + errors.reduce((a, b) => a + b));
         }
 
         
