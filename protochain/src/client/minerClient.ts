@@ -6,8 +6,8 @@ import Block from "../lib/block";
 import BlockInfo from "../lib/blockInfo";
 import Wallet from '../lib/wallet';
 import Transaction from '../lib/transaction';
-import TransactionType from '../lib/transactionTypes';
-import TransactionOutput from '../lib/transacionOutput';
+import TransactionType from '../lib/transactionType';
+import TransactionOutput from '../lib/transactionOutput';
 
 const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
 

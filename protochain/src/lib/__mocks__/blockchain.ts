@@ -6,17 +6,17 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/02/16 11:36:13 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/16 15:15:16 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Block from "./block";
 import Validation from "../validation";
 import BlockInfo from "../blockInfo";
-import Transaction from "./transaction";
-import TransactionType from "../transactionTypes";
+import Transaction from "../transaction";
+import TransactionType from "../transactionType";
 import TransactionSearch from "../transactionSearch";
-import TransactionInput from "./transactionInput";
+import TransactionInput from "../transactionInput";
 /**
  * mocked blockchain class
  */

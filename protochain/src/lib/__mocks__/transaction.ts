@@ -6,14 +6,14 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:29:21 by tales             #+#    #+#             */
-/*   Updated: 2025/02/16 11:17:35 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/16 15:26:32 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import TransactionInput from "./transactionInput";
-import TransactionType from "../transactionTypes";
+import TransactionInput from "../transactionInput";
+import TransactionType from "../transactionType";
 import Validation from "../validation";
-import TransactionOutput from "./transacionOutput";
+import TransactionOutput from "../transactionOutput";
 
 /**
  * Mocked Transaction class
@@ -38,7 +38,7 @@ export default class Transaction{
         return "abc";
     }
 
-    isValid():Validation{
+    isValid(): Validation{
         if(this.timestamp < 1 || !this.hash)
             return new Validation(false, "Invalid mock transaction");
 

@@ -7,9 +7,9 @@ import Wallet from "../lib/wallet";
 import { Console } from "console";
 import Transaction from "../lib/transaction";
 import TransactionInput from "../lib/transactionInput";
-import TransactionType from "../lib/transactionTypes";
+import TransactionType from "../lib/transactionType";
 import { hash } from "crypto";
-import TransactionOutput from "../lib/transacionOutput";
+import TransactionOutput from "../lib/transactionOutput";
 
 const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
 

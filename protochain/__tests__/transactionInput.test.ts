@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   transactionInput.test.ts                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 13:15:20 by tales             #+#    #+#             */
-/*   Updated: 2025/01/26 17:03:28 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 import TransactionInput from "../src/lib/transactionInput";
 import Wallet from '../src/lib/wallet';
 
@@ -29,6 +16,7 @@ describe("TransactionInput tests", () => {
     const txInput = new TransactionInput({
         amount: 10,
         fromAddress: alice.publicKey,
+        previousTx: 'abc'
     }as TransactionInput);
     txInput.sign(alice.privateKey)
     
@@ -63,20 +51,5 @@ describe("TransactionInput tests", () => {
     const valid = txInput.isValid();
     expect(valid.success).toBeFalsy();//ou toEqual
   });
-
-  test("Sould be valid", () => {
-    const txInput = new TransactionInput({
-        amount: 10,
-        fromAddress: alice.publicKey,
-    } as TransactionInput);
-    txInput.sign(alice.privateKey);
-
-    console.log("Assinatura gerada no teste:", txInput.signature);
-
-    const valid = txInput.isValid();
-    expect(valid.success).toBeTruthy();
-});
-
-
 
 });

@@ -7,7 +7,7 @@ import Blockchain from "../lib/blockchain";
 import Block from "../lib/block";
 import Transaction from '../lib/transaction';
 import Wallet from '../lib/wallet';
-import TransactionOutput from '../lib/transacionOutput';
+import TransactionOutput from '../lib/transactionOutput';
 
 const PORT: number = parseInt(`${process.env.BLOCCHAIN_PORT || 3000}`);
 

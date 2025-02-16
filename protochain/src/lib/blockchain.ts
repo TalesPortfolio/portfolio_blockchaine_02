@@ -2,9 +2,9 @@ import Block from "./block";
 import Validation from "./validation";
 import BlockInfo from "./blockInfo";
 import Transaction from "./transaction";
-import TransactionType from "./transactionTypes";
+import TransactionType from "./transactionType";
 import TransactionSearch from "./transactionSearch";
-import TransactionOutput from "./transacionOutput";
+import TransactionOutput from "./transactionOutput";
 /**
  * blockchain class
  */

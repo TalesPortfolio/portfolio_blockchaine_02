@@ -1,8 +1,8 @@
-import TransactionType from "./transactionTypes";
+import TransactionType from "./transactionType";
 import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
 import TransactionInput from "./transactionInput";
-import TransactionOutput from "./transacionOutput";
+import TransactionOutput from "./transactionOutput";
 
 /**
  * Transaction class

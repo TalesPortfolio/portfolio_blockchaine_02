@@ -2,7 +2,7 @@ import sha256 from 'crypto-js/sha256';
 import Validation from "./validation";
 import BlockInfo from './blockInfo';
 import Transaction from './transaction';
-import TransactionType from './transactionTypes';
+import TransactionType from './transactionType';
 
 
 //Cria uma classes e estou exportando a minha casse
