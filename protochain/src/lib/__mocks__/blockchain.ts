@@ -6,7 +6,7 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 20:10:14 by tales             #+#    #+#             */
-/*   Updated: 2025/02/13 17:11:33 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/16 11:36:13 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,17 @@ export default class Blockchain {
    * Create a new mocked blockchain
    */
 
-  constructor() {
-    this.mempool = [];
-    this.blocks = [
-      new Block({
+  constructor(miner: string) {
+    this.blocks = [];
+    this.mempool = [new Transaction()];
+    
+    this.blocks.push(new Block({
         index: 0,
         hash: "abc",
         previousHash: "",
-        transactions: [new Transaction({
-          txInput: new TransactionInput(),
-          type: TransactionType.FEE
-        } as Transaction)],
-        timestamp: Date.now(),
-      } as Block),
-    ];
+        miner,
+        timestamp: Date.now()
+    }as Block));
     this.nextIndex++;
   }
 
@@ -68,15 +65,18 @@ export default class Blockchain {
   }
 
   getTransaction(hash: string) : TransactionSearch{
+    if(hash === "-1")
+      return {mempoolIndex: -1, blockIndex: -1}as TransactionSearch;
+      
     return {
       mempoolIndex: 0,
-      transaction: {
-        hash
-      }
+      transaction: new Transaction()
     }as TransactionSearch;
   }
 
   getBlock(hash: string): Block | undefined {
+    if(!hash || hash === "-1")return undefined;
+     
     return this.blocks.find((b) => b.hash === hash);
   }
 
@@ -90,12 +90,10 @@ export default class Blockchain {
 
   getNextBlock(): BlockInfo {
     return {
-      transactions:[new Transaction({
-        txInput: new TransactionInput()
-      } as Transaction)],
+      transactions:this.mempool.slice(0,2),
       difficulty: 1,
       previousHash: this.getLastBlock().hash,
-      index: 1,
+      index: this.blocks.length,
       feePerTx: this.getFeePerTx(),
       maxDifficulty: 62,
     } as BlockInfo;

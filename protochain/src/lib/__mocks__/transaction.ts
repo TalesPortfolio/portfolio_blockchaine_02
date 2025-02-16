@@ -6,30 +6,31 @@
 /*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:29:21 by tales             #+#    #+#             */
-/*   Updated: 2025/02/13 18:21:39 by tales            ###   ########.fr       */
+/*   Updated: 2025/02/16 11:17:35 by tales            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import TransactionInput from "./transactionInput";
 import TransactionType from "../transactionTypes";
 import Validation from "../validation";
-import TransactionInput from "./transactionInput";
+import TransactionOutput from "./transacionOutput";
 
 /**
- * Transaction mocking class
+ * Mocked Transaction class
  * 
  */
 export default class Transaction{
     type: TransactionType;
     timestamp: number;
     hash: string;
-    txInput: TransactionInput
-    to: string;
+    txInputs: TransactionInput[] | undefined;
+    txOutputs: TransactionOutput[];
 
     constructor(tx?: Transaction){
         this.type = tx?.type || TransactionType.REGULAR;
         this.timestamp = tx?.timestamp || Date.now();
-        this.to = tx?.to || "carteiraTo";
-        this.txInput = tx?.txInput ? new TransactionInput(tx?.txInput) : new TransactionInput();
+        this.txOutputs = tx?.txOutputs || [new TransactionOutput()];
+        this.txInputs = tx?.txInputs|| [new TransactionInput()];
         this.hash = tx?.hash || this.getHash();
     }
 
@@ -38,8 +39,9 @@ export default class Transaction{
     }
 
     isValid():Validation{
-        if(!this.to)return new Validation(false, "Invalid mock transaction");
-        if(!this.txInput.isValid().success) return new Validation(false, "Invalid mock transaction");
+        if(this.timestamp < 1 || !this.hash)
+            return new Validation(false, "Invalid mock transaction");
+
         return new Validation();
     }
 }
