@@ -7,6 +7,7 @@ import Blockchain from "../lib/blockchain";
 import Block from "../lib/block";
 import Transaction from '../lib/transaction';
 import Wallet from '../lib/wallet';
+import TransactionOutput from '../lib/transacionOutput';
 
 const PORT: number = parseInt(`${process.env.BLOCCHAIN_PORT || 3000}`);
 
@@ -59,14 +60,14 @@ app.post('/blocks',(req:Request, res:Response,next: NextFunction) => {
 })
 
 app.get('/transactions/:hash?',(req:Request, res:Response,next: NextFunction) => {
-    if(req.params.hash){
+   
+    if(req.params.hash)
         res.json(blockchain.getTransaction(req.params.hash));
-    }
-    
-    res.json({
-        next: blockchain.mempool.slice(0,Blockchain.TX_PER_BLOCK),
-        total: blockchain.mempool.length
-    });
+    else
+        res.json({
+            next: blockchain.mempool.slice(0,Blockchain.TX_PER_BLOCK),
+            total: blockchain.mempool.length
+        });
 }) 
 
 app.post('/transactions',(req:Request, res:Response,next: NextFunction) => {
@@ -81,10 +82,26 @@ app.post('/transactions',(req:Request, res:Response,next: NextFunction) => {
         res.status(400).json(validation);
 })
 
+app.get('/wallets/:wallets',(req: Request, res: Response, next: NextFunction) => {
+    const  wallet = req.params.wallet;
+
+    //TODO: fazer versao final de UTXO
+    return res.json({
+        balance: 10,
+        fee:blockchain.getFeePerTx(),
+        utxo:[new TransactionOutput({
+            amount: 10,
+            toAddress: wallet,
+            tx: 'abc'
+        }as TransactionOutput )]
+    })
+})
 
 /* c8 ignore start */
-if(process.argv.includes("--run")){app.listen(PORT, () => {console.log(`Blockchain server is running at ${PORT}`);})}
+if(process.argv.includes("--run"))
+    app.listen(PORT, () => console.log(`Blockchain server is running at ${PORT}. Wallet: ${wallet.publicKey}`));
 /* c8 ignore stop */
+
 export {
     app
 }

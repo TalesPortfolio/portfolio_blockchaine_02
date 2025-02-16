@@ -9,7 +9,7 @@
     "start": "node ./dist/blockchain.js",
     "test": "jest",
     "blockchain": "ts-node ./src/server/blockchainServer.ts --run",
-    "mine": "ts-node ./src/client/minerClient.ts",
+    "miner": "ts-node ./src/client/minerClient.ts",
     "wallet":"ts-node ./src/client/walletClient.ts"
   },
   "author": "Tales",
