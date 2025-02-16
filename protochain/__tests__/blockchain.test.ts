@@ -1,26 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   blockchain.test.ts                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 12:34:52 by tales             #+#    #+#             */
-/*   Updated: 2025/02/16 14:41:07 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
+import { describe, test, expect, jest, beforeAll } from '@jest/globals'
 import Block from "../src/lib/block";
 import Blockchain from "../src/lib/blockchain";
 import Transaction from "../src/lib/transaction";
 import TransactionInput from "../src/lib/transactionInput";
+import TransactionOutput from "../src/lib/transactionOutput";
+import TransactionType from "../src/lib/transactionType";
 import Wallet from '../src/lib/wallet';
 
 jest.mock("../src/lib/block");
 jest.mock('../src/lib/transaction');
 jest.mock('../src/lib/transactionInput');
 
-describe("Block tests", () => {
+describe("Blockchain tests", () => {
 
   let alice: Wallet;
   
@@ -193,23 +185,51 @@ describe("Block tests", () => {
     expect(result.success).toEqual(true);
   });
 
+  test("Should NOT add block (invalid mempool)", () => {
+    const blockchain = new Blockchain(alice.publicKey);
+    blockchain.mempool.push(new Transaction());
+    blockchain.mempool.push(new Transaction());
+
+    const tx = new Transaction({
+      txInputs: [new TransactionInput()],
+    } as Transaction);
+
+    const result = blockchain.addBlock(
+      new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        transactions: [tx],
+      } as Block)
+    );
+    expect(result.success).toBeFalsy();
+  });
+
+
   test("Should get block ", () => {
     const blockchain = new Blockchain(alice.publicKey);
     const block = blockchain.getBlock(blockchain.blocks[0].hash);
     expect(block).toBeTruthy();
   });
 
-  test("Should NOT add block ", () => {
+  test("Should NOT add block (invalid index)", () => {
     const blockchain = new Blockchain(alice.publicKey);
+    blockchain.mempool.push(new Transaction());
+    
     const block = new Block({
       index: -1,
       previousHash: blockchain.blocks[0].hash,
-      transactions: [
-        new Transaction({
-          txInputs: [new TransactionInput()],
-        } as Transaction),
-      ],
     } as Block);
+    
+    block.transactions.push(new Transaction({
+      type:TransactionType.FEE,
+      txOutputs: [new TransactionOutput({
+        toAddress: alice.publicKey,
+        amount: 1
+      }as TransactionOutput)]
+    }as Transaction))
+
+    block.hash = block.getHash();
+    
     const result = blockchain.addBlock(block);
     expect(result.success).toEqual(false);
   });

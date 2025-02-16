@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   transaction.ts                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tales <tales@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 19:29:21 by tales             #+#    #+#             */
-/*   Updated: 2025/02/16 15:26:32 by tales            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 import TransactionInput from "../transactionInput";
 import TransactionType from "../transactionType";
 import Validation from "../validation";
