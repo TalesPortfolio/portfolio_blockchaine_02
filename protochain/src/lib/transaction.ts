@@ -88,7 +88,7 @@ export default class Transaction{
         }
         
 
-        return new Validation();
+        return new Validation(true);
     }
 
     static fromReward(txo: TransactionOutput) : Transaction {
