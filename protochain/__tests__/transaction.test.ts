@@ -155,7 +155,6 @@ test('Should create from reward', () => {
 
 
   const result = tx.isValid(exampleDifficulty, exampleFee);
-  console.log(result.success);
   expect(result.success).toBeTruthy()
 })
 
@@ -171,7 +170,6 @@ test('Should NOT be valid (fee excess)', () => {
   }as Transaction)
 
   const result = tx.isValid(exampleDifficulty, exampleFee);
-  console.log(result.success);
   expect(result.success).toBeFalsy();
 
 })

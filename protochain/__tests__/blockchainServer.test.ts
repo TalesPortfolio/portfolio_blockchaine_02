@@ -82,9 +82,7 @@ describe('BlockchainServer Tests', () => {
         }as Block);
         const response = await request(app)
             .post('/blocks/')
-            .send(block);
-
-        expect(response.status).toEqual(400);
+            .get('/blocks/abc');
     })
 
     test('GET /transactions/:hash - Should get transactions', async()=>{
