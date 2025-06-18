@@ -1,3 +1,4 @@
+// web/src/lib/ethers.ts
 ////////////////////////////////////////////////////////////////////////////////////
 // UTILITARY LIB FOR SMART CONTRACT INTERACTIONS                                          
 //                                                                                      
@@ -7,8 +8,9 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 import { ethers } from "ethers";
-import GameTokenJson from "../../../artifacts/contracts/GameToken.sol/GameToken.json";
-import GameStoreJson from "../../../artifacts/contracts/GameStore.sol/GameStore.json";
+// Ajuste os paths para o diretório abis dentro de src/lib
+import GameTokenJson from "./abis/GameToken.json";
+import GameStoreJson from "./abis/GameStore.json";
 
 // Endereços dos contratos implantados, definidos via variáveis de ambiente
 const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
