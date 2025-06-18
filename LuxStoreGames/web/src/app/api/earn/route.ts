@@ -1,4 +1,3 @@
-// web/src/app/api/earn/route.ts
 import { NextResponse } from "next/server";
 import { ethers } from "ethers";
 import GameTokenJson from "@/lib/abis/GameToken.json";
@@ -13,7 +12,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // 2) Validações básicas
+  // 2) Validações
   if (!ethers.isAddress(address)) {
     return NextResponse.json({ error: "Invalid address" }, { status: 400 });
   }
@@ -22,14 +21,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
   }
 
-  // 3) Configura o provider e a wallet do admin
+  // 3) Provider e carteira admin
   const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
   const adminWallet = new ethers.Wallet(
-    process.env.PRIVATE_KEY as string,
+    process.env.PRIVATE_KEY!,
     provider
   );
 
-  // 4) Instancia seu GameToken como admin, usando o ABI copiado
+  // 4) Contrato GameToken do admin
   const token = new ethers.Contract(
     process.env.GAME_TOKEN_ADDRESS!,
     GameTokenJson.abi,
@@ -37,15 +36,10 @@ export async function POST(req: Request) {
   );
 
   try {
-    // 5) Chama mint on-chain
+    // 5) Mint
     const tx = await token.mint(address, amt);
     const receipt = await tx.wait();
-
-    return NextResponse.json({
-      txHash: receipt.transactionHash,
-      to: address,
-      amount: amt.toString(),
-    });
+    return NextResponse.json({ txHash: receipt.transactionHash });
   } catch (err: any) {
     console.error("Mint error:", err);
     return NextResponse.json(

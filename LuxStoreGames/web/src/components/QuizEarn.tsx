@@ -23,8 +23,8 @@ interface TriviaAPIQuestion {
 }
 
 interface Question {
-  questionEn: string;
-  options: { value: string; label: string }[];
+  question: string;
+  options: string[];
   correct: string;
 }
 
@@ -37,51 +37,50 @@ export default function QuizEarn() {
   const [score, setScore] = useState(0);
   const [earned, setEarned] = useState(false);
 
-  // Embaralhador simples
-  function shuffle<T>(arr: T[]): T[] {
-    return arr
+  // helper para embaralhar
+  const shuffle = <T,>(arr: T[]): T[] =>
+    arr
       .map((v) => [Math.random(), v] as [number, T])
       .sort((a, b) => a[0] - b[0])
       .map(([, v]) => v);
-  }
 
-  // Carrega perguntas do Open Trivia DB
   useEffect(() => {
     async function fetchQuestions() {
+      setLoading(true);
       try {
         const res = await fetch(
-          "https://opentdb.com/api.php?amount=10&type=multiple&encode=url3986"
+          "https://opentdb.com/api.php?amount=10&type=multiple",
+          { mode: "cors" }
         );
+        if (!res.ok) {
+          console.error("Trivia API HTTP error:", res.status);
+          return;
+        }
         const data = await res.json();
-        const items: TriviaAPIQuestion[] = data.results.map((q: any) => ({
-          question: decodeURIComponent(q.question),
-          correct_answer: decodeURIComponent(q.correct_answer),
-          incorrect_answers: q.incorrect_answers.map((a: string) =>
-            decodeURIComponent(a)
-          ),
-        }));
+        if (!Array.isArray(data.results)) {
+          console.error("Trivia API retornou formato inesperado:", data);
+          return;
+        }
 
-        // Mapeia para nosso formato
-        const mapped: Question[] = items.map((q) => {
-          // junta correto + incorretos e remove duplicados
-          const raw = [q.correct_answer, ...q.incorrect_answers];
-          const unique = Array.from(new Set(raw));
-          const all = shuffle(unique);
-
-          return {
-            questionEn: q.question,
-            options: all.map((opt) => ({
-              value: opt,
-              label: opt,
-            })),
-            correct: q.correct_answer,
-          };
+        const mapped: Question[] = data.results.map((q: any) => {
+          // decodifica entidades HTML simples
+          const decode = (s: string) =>
+            s.replace(/&quot;/g, '"')
+             .replace(/&#039;/g, "'")
+             .replace(/&amp;/g, "&")
+             .replace(/&eacute;/g, "é")
+             .replace(/&uuml;/g, "ü");
+          const question = decode(q.question);
+          const correct = decode(q.correct_answer);
+          const incorrects = q.incorrect_answers.map((a: string) => decode(a));
+          const options = shuffle([correct, ...incorrects]);
+          return { question, options, correct };
         });
 
         setQuestions(mapped);
         setAnswers(Array(mapped.length).fill(""));
       } catch (err) {
-        console.error("Error fetching questions:", err);
+        console.error("Erro ao buscar questões de quiz:", err);
       } finally {
         setLoading(false);
       }
@@ -89,7 +88,6 @@ export default function QuizEarn() {
     fetchQuestions();
   }, []);
 
-  // Marca uma resposta
   function selectAnswer(idx: number, value: string) {
     if (submitted) return;
     const tmp = [...answers];
@@ -97,7 +95,6 @@ export default function QuizEarn() {
     setAnswers(tmp);
   }
 
-  // Envia e pontua
   async function handleSubmit() {
     let correctCount = 0;
     questions.forEach((q, i) => {
@@ -126,12 +123,11 @@ export default function QuizEarn() {
     }
   }
 
-  // Se não conectado, pede MetaMask
   if (!address) {
     return (
       <QuizContainer>
         <Instructions>
-          <p>Please install or connect MetaMask to take the quiz.</p>
+          <p>Please install or connect MetaMask to take the quiz:</p>
         </Instructions>
         <ConnectButton onClick={connect}>
           Install / Connect MetaMask
@@ -140,12 +136,10 @@ export default function QuizEarn() {
     );
   }
 
-  // Enquanto carrega perguntas
   if (loading) {
     return <QuizContainer>Loading quiz…</QuizContainer>;
   }
 
-  // Render final
   return (
     <QuizContainer>
       <Title>Current Affairs Quiz</Title>
@@ -153,28 +147,26 @@ export default function QuizEarn() {
       {questions.map((q, i) => (
         <QuestionBlock key={i}>
           <QuestionText>
-            Q{i + 1}. {q.questionEn}
+            Q{i + 1}. {q.question}
           </QuestionText>
           {q.options.map((opt) => (
-            <OptionLabel key={opt.value}>
+            <OptionLabel key={opt}>
               <input
                 type="radio"
                 name={`q${i}`}
-                value={opt.value}
-                checked={answers[i] === opt.value}
-                onChange={() => selectAnswer(i, opt.value)}
+                value={opt}
+                checked={answers[i] === opt}
+                onChange={() => selectAnswer(i, opt)}
                 disabled={submitted}
               />
-              {opt.label}
+              {opt}
             </OptionLabel>
           ))}
         </QuestionBlock>
       ))}
 
       {!submitted ? (
-        <SubmitButton onClick={handleSubmit}>
-          Submit
-        </SubmitButton>
+        <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
       ) : (
         <Result>
           <p>
