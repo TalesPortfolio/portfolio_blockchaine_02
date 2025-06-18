@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",          
+    "moduleResolution": "node",    
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "types": ["node", "hardhat"],  // garante `import { ethers } from "hardhat"`
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "hardhat.config.ts",
+    "scripts/**/*.ts",      // seus scripts de deploy
+    "contracts/**/*.sol"    // para typechain, se usar
+  ],
+  "exclude": [
+    "node_modules",
+    "web"                   // não processe o Next.js aqui
+  ]
+}

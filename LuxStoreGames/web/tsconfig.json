@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    // --- Padrões do Next.js ---
+    "target": "es2020",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true, // exigido pelo Next
+    "noEmit": true, // exigido pelo Next
+    "jsx": "preserve", // exigido pelo Next
+    // --- Seus aliases para import “@/…” ---
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    // --- Plugin do Next.js (mantido) ---
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

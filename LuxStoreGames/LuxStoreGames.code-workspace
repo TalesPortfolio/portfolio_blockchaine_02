@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "."           // seu Hardhat + contratos + scripts
+    },
+    {
+      "path": "web"         // seu Next.js
+    }
+  ],
+  "settings": {
+    // aqui vão configurações de workspace, se precisar
+  }
+}
