@@ -1,20 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////////
-// SMART CONTRACTS CONNECTOR                                                            
-//                                                                                      
-// Este módulo conecta sua aplicação front-end aos contratos GameToken (ERC-20)       
-// e GameStore (loja de jogos) usando a biblioteca ethers.js.                          
-////////////////////////////////////////////////////////////////////////////////////
-
-import GameTokenABI from "../../../artifacts/contracts/GameToken.sol/GameToken.json";
-import GameStoreABI from "../../../artifacts/contracts/GameStore.sol/GameStore.json";
+// web/src/lib/contracts.ts
 import { ethers } from "ethers";
+import GameTokenJson from "./abis/GameToken.json";
+import GameStoreJson from "./abis/GameStore.json";
 
 // Endereços dos contratos implantados, fornecidos via variáveis de ambiente.
 // NEXT_PUBLIC_* garante que essas variáveis estejam disponíveis no browser.
 const tokenAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
 const storeAddress = process.env.NEXT_PUBLIC_STORE_ADDRESS!;
-const rpcUrl      = process.env.NEXT_PUBLIC_RPC_URL!;
-
 
 /**
  * Retorna uma instância do contrato GameToken, permitindo
@@ -24,11 +16,11 @@ const rpcUrl      = process.env.NEXT_PUBLIC_RPC_URL!;
  * @returns Contrato GameToken conectado ao endereço e ABI correspondentes
  */
 export function getTokenContract(
-  signerOrProvider: ethers.Provider | ethers.Signer
+  signerOrProvider: ethers.Signer | ethers.Provider
 ) {
   return new ethers.Contract(
     tokenAddress,
-    GameTokenABI.abi,
+    GameTokenJson.abi,
     signerOrProvider
   );
 }
@@ -38,15 +30,15 @@ export function getTokenContract(
  * uma vez que somente um signer (carteira habilitada) pode executar as funções
  * que alteram o estado (addGame, buyGame, etc.).
  *
- * @param signer - Objeto ethers.Signer para enviar transações
+ * @param signerOrProvider - Objeto ethers.Signer para enviar transações
  * @returns Contrato GameStore conectado ao endereço e ABI correspondentes
  */
 export function getStoreContract(
-  signer: ethers.Signer
+  signerOrProvider: ethers.Signer | ethers.Provider
 ) {
   return new ethers.Contract(
     storeAddress,
-    GameStoreABI.abi,
-    signer
+    GameStoreJson.abi,
+    signerOrProvider
   );
 }

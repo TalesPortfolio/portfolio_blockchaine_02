@@ -1,10 +1,7 @@
 // web/src/app/api/earn/route.ts
 import { NextResponse } from "next/server";
 import { ethers } from "ethers";
-import * as dotenv from "dotenv";
-import GameTokenJson from "../../../../../artifacts/contracts/GameToken.sol/GameToken.json";
-
-dotenv.config();
+import GameTokenJson from "@/lib/abis/GameToken.json";
 
 export const runtime = "nodejs";
 
@@ -32,7 +29,7 @@ export async function POST(req: Request) {
     provider
   );
 
-  // 4) Instancia seu GameToken como admin
+  // 4) Instancia seu GameToken como admin, usando o ABI copiado
   const token = new ethers.Contract(
     process.env.GAME_TOKEN_ADDRESS!,
     GameTokenJson.abi,
