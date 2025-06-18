@@ -31,24 +31,25 @@ export default function AboutPage() {
       <Role>Blockchain & Full-Stack Developer</Role>
 
       <Bio>
-        Hello!Sou Tales, a developer with solid web3 experience and applications full-stack:
+        Hello! I’m Tales, a developer with solid experience in Web3 and full-stack
+        applications:
         <ul>
-          <li>👨‍💻 +3 years ofJavaScript / TypeScript, React & Next.js</li>
+          <li>👨‍💻 3+ years of JavaScript / TypeScript, React & Next.js</li>
           <li>🔐 Smart contracts in Solidity (ERC-20, OpenZeppelin, Hardhat)</li>
-          <li>☁️ Deploy in AWS, Vercel, Sepolia Testnet</li>
+          <li>☁️ Deployed to AWS, Vercel & Sepolia Testnet</li>
           <li>🛠️ Tools: Ethers.js, Hardhat Ignition, styled-components</li>
-          <li>📦 I designed and implemented your own Token Economy (GameToken & GameStore)</li>
+          <li>📦 Designed and implemented a custom Token Economy (GameToken & GameStore)</li>
         </ul>
       </Bio>
 
       <Education>
-        <h3>Training and Specialization</h3>
+        <h3>Education & Specialization</h3>
         <p>
-          🎓 Student in <strong>42 Luxembourg</strong> 1 and a half years ago — 
-          currently finalizing the Piscine program and plunging into Web & Mobile.
+          🎓 Student at <strong>42 Luxembourg</strong> for one and a half years —
+          currently completing the Piscine program and diving into Web & Mobile projects.
         </p>
         <p>
-          🚀 Soon I will start specialization in <em>Web Development</em> e 
+          🚀 Soon starting a specialization in <em>Web Development</em> and{" "}
           <em>Mobile Web Apps</em>.
         </p>
       </Education>
@@ -100,7 +101,7 @@ export default function AboutPage() {
       </SocialLinks>
 
       <Contact>
-        <p>Let's talk?</p>
+        <p>Let’s talk!</p>
         <ContactLink href="mailto:tales_lima_1982@hotmail.com">
           Send me an email
         </ContactLink>
@@ -108,3 +109,4 @@ export default function AboutPage() {
     </AboutSection>
   );
 }
+
